@@ -1,0 +1,6 @@
+name: ChestShop
+version: '${project.version}'
+main: de.waterdropmc.plot.ChestShop
+authors: [ Hekates ]
+description: ChestShop system for the WaterdropMC network.
+website: waterdropmc.de
