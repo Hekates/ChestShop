@@ -8,6 +8,7 @@ public final class ChestShop extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new CreateShopListener(), this);
 
     }
