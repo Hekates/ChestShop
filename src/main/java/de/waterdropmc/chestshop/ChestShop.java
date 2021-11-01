@@ -1,12 +1,14 @@
-package de.waterdropmc.plot;
+package de.waterdropmc.chestshop;
 
+import de.waterdropmc.chestshop.listeners.CreateShopListener;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ChestShop extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        Bukkit.getPluginManager().registerEvents(new CreateShopListener(), this);
 
     }
 
