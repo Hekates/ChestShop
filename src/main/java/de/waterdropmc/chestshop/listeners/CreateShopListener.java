@@ -1,6 +1,7 @@
 package de.waterdropmc.chestshop.listeners;
 
 import de.waterdropmc.chestshop.ChestShop;
+import de.waterdropmc.chestshop.utils.*;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -12,45 +13,44 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Sign;
 
+import java.util.Arrays;
+import java.util.Locale;
+
 
 public class CreateShopListener implements Listener {
+
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
         Player player = event.getPlayer();
-        Sign sign = (Sign) event.getBlock().getState().getData();
-        Block attachedBlock = event.getBlock().getRelative(sign.getAttachedFace());
 
-        if (!(event.getBlock().getWorld().getName().equals(ChestShop.getPlugin(ChestShop.class).getConfig().getString("level-name")))) return;
+        org.bukkit.material.Sign signMaterial = (org.bukkit.material.Sign) event.getBlock().getState().getData();
+        Block attachedBlock = (Block) event.getBlock().getRelative(signMaterial.getAttachedFace());
+        Chest chest = (org.bukkit.block.Chest) attachedBlock.getLocation().getBlock().getState();
+
         if (!(attachedBlock.getType().equals(Material.CHEST))) return;
         if (!(event.getLine(0).equalsIgnoreCase("chestshop"))) return;
-        if (!(event.getLine(1).isEmpty())){
+        if (event.getLine(1).isEmpty() || event.getLine(2).isEmpty() || event.getLine(3).isEmpty()) return;
+
             int amount = Integer.parseInt(event.getLine(1));
-            Chest chest = (Chest) attachedBlock;
-            Inventory inv = chest.getBlockInventory();
+            ItemStack item = Arrays.stream(chest.getBlockInventory().getContents()).findFirst().get();
+            int price = Integer.parseInt(event.getLine(2));
+            String currency = event.getLine(3).toUpperCase();
 
-            ItemStack item = null;
-
-            for (int i = 0; i > 25; i++) {
-                if (inv.getItem(i).getType() != Material.AIR) {
-                    item = inv.getItem(i);
-                }
+            if (event.getLine(3).endsWith("s")){
+                currency = currency.substring(0,currency.length() -1).toUpperCase();
+            }else{
+                currency = event.getLine(3).toUpperCase();
             }
 
-            if (item == null) {
-                //Keine Items in der Kiste
-                return;
-            }
-
+            Material currencyM = Material.matchMaterial(currency);
             if (!(chest.getBlockInventory().containsAtLeast(item, amount))) return;
 
-            event.setLine(0, "-" + player.getName() + "'s-");
-            event.setLine(1, event.getLine(1) + " " + item);
-        }else {
-            player.sendMessage(ChestShop.getPlugin(ChestShop.class).getConfig().getString("empty-line-error"));
-        }
+            event.setLine(0, price + " " + currency);
+            event.setLine(1, " ");
+            event.setLine(2, amount + "x          ");
+            event.setLine(3, " ");
 
-
-        player.sendMessage("Test");
+            player.sendMessage("Test");
 
     }
 }
