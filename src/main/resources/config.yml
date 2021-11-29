@@ -9,6 +9,20 @@
 #   |  (_|[    |/\|(_] |(/,[  |__/[ (_)[_)|  |\__.#
 ###################################################
 
+#   _____       ___                        _    _
+#  |     | ___ |  _| ___  ___  _____  ___ | |_ |_| ___  ___  ___
+#  |-   -||   ||  _|| . ||  _||     || .'||  _|| || . ||   ||_ -|
+#  |_____||_|_||_|  |___||_|  |_|_|_||__,||_|  |_||___||_|_||___|
+
 level-name: "world"
+
+#   _____
+#  |   __| ___  ___  ___  ___  ___
+#  |   __||  _||  _|| . ||  _||_ -|
+#  |_____||_|  |_|  |___||_|  |___|
+
 empty-line-error: "Du hast eine oder mehrere Linien nicht ausgefüllt!"
+permission-error: "Du hast die permission nicht!"
+wrong-gamemode-error: "Du bist im falschen Spielmodus. Dieses Feature ist nur Spieler im Survivalmodus gestattet."
+not-enough-items-in-chest-error: "Du hast zu wenig von den Items, die du verkaufen wills in der Truhe"
 
