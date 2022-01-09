@@ -31,7 +31,10 @@ public class CreateShopListener implements Listener {
         Chest chest = (Chest) attachedBlock.getLocation().getBlock().getState();
         Location location = chest.getLocation();
 
-        ItemStack item = player.getItemInHand();
+        ItemStack item = player.getInventory().getItemInHand();
+
+        Material itemMat = item.getType();
+        ItemStack itemMatStack = new ItemStack(itemMat);
 
         Configuration config = ChestShop.getPlugin(ChestShop.class).getConfig();
 
@@ -46,57 +49,65 @@ public class CreateShopListener implements Listener {
             player.sendMessage(config.getString("wrong-gamemode-error"));
             return;
         }
-        if (clicked.isEmpty()) {
-            String[] splitStr = item.getItemMeta().getDisplayName().toLowerCase().split("\\s+");
-            int amount = Integer.parseInt(splitStr[0]);
-            int price = Integer.parseInt(splitStr[1]);
-            String currency = splitStr[2];
-
-            //Removes -s from currancy to convert to material
-            if (splitStr[2].endsWith("s")) {
-                currency = currency.substring(0, currency.length() - 1).toUpperCase();
-            } else {
-                currency = splitStr[2].toUpperCase();
-            }
-
-            //Converts currancy String to Material
-            Material currencyM = Material.matchMaterial(currency);
-
-            //Checks if the chest contains enough items to sell
-            if (!chest.getBlockInventory().containsAtLeast(item, amount)) {
-                player.sendMessage(config.getString("not-enough-items-in-chest-error"));
-                return;
-            }
-
-            //Sets informations to lore
-            List<String> lore = new ArrayList<String>();
-            lore.add(splitStr[0]);
-            lore.add(splitStr[1]);
-            lore.add(currencyM.toString());
-
-            //applies lore + display name
-            ItemStack newItem = new ItemStack(Material.matchMaterial(item.getType().toString()));
-            ItemMeta meta = newItem.getItemMeta();
-            meta.setLore(lore);
-            meta.setDisplayName(amount + " -> " + price + " " + currency);
-            newItem.setItemMeta(meta);
-
-            //summons armorstand with creators name
-            ArmorStand as = (ArmorStand) location.getWorld().spawnEntity(location.add(0.5, -1, 0.5), EntityType.ARMOR_STAND); //Spawn the ArmorStand
-
-            as.setGravity(false);
-            as.setCanPickupItems(false);
-            as.setCustomName("-- " + player.getName() + "'s shop -- ");
-            as.setCustomNameVisible(true);
-            as.setVisible(false);
-
-            //anything, that should be executed, when the Item is placed
-            itemFrame.setItem(newItem);
-            player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
-            itemFrame.setRotation(Rotation.COUNTER_CLOCKWISE_45);
-            player.sendMessage(amount + " " + price + " " + currency);
-        } else {
+        if (!clicked.isEmpty()){
+            event.setCancelled(true);
             return;
         }
+
+        if (player.getItemInHand().getAmount() == 0) return;
+
+        String[] splitStr = item.getItemMeta().getDisplayName().toLowerCase().split("\\s+");
+        int amount = Integer.parseInt(splitStr[0]);
+        int price = Integer.parseInt(splitStr[1]);
+        String currency = splitStr[2];
+
+        if (player.getInventory().getItemInHand().getAmount() > 1){
+            player.getInventory().getItemInHand().setAmount(player.getItemInHand().getAmount() -1);
+        } else if (player.getInventory().getItemInHand().getAmount() == 1){
+            player.getInventory().addItem(new ItemStack(Material.APPLE));
+        }
+
+        //Removes -s from currancy to convert to material
+        if (splitStr[2].endsWith("s")) {
+            currency = currency.substring(0, currency.length() - 1).toUpperCase();
+        } else {
+            currency = splitStr[2].toUpperCase();
+        }
+
+        //Converts currancy String to Material
+        Material currencyM = Material.matchMaterial(currency);
+
+        //Checks if the chest contains enough items to sell
+        if (!chest.getBlockInventory().containsAtLeast(itemMatStack, amount)) {
+            player.sendMessage(config.getString("not-enough-items-in-chest-error"));
+            return;
+        }
+
+        //summons armorstand with creators name
+        ArmorStand as = (ArmorStand) location.getWorld().spawnEntity(location.add(0.5, -0.5, 0.5), EntityType.ARMOR_STAND); //Spawn the ArmorStand
+
+        as.setGravity(false);
+        as.setCanPickupItems(false);
+        as.setCustomName("-- " + player.getName() + "'s shop -- ");
+        as.setCustomNameVisible(true);
+        as.setVisible(false);
+
+        //Sets informations to lore
+        List<String> lore = new ArrayList<String>();
+        lore.add(splitStr[0]);
+        lore.add(splitStr[1]);
+        lore.add(currencyM.toString());
+        lore.add("shop");
+        lore.add(as.getUniqueId().toString());
+
+        //applies lore + display name
+        ItemStack newItem = new ItemStack(Material.matchMaterial(item.getType().toString()));
+        ItemMeta meta = newItem.getItemMeta();
+        meta.setLore(lore);
+        meta.setDisplayName(amount + " -> " + price + " " + currency);
+        newItem.setItemMeta(meta);
+        //anything, that should be executed, when the Item is placed
+        itemFrame.setItem(newItem);
+        itemFrame.setRotation(Rotation.COUNTER_CLOCKWISE_45);
     }
 }
