@@ -1,4 +1,4 @@
-package de.waterdropmc.chestshop.listeners;
+package net.waterdropmc.chestshop.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;

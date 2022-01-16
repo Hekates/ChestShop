@@ -1,6 +1,6 @@
 name: ChestShop
 version: '${project.version}'
-main: de.waterdropmc.chestshop.ChestShop
+main: net.waterdropmc.chestshop.ChestShop
 authors: [ Hekates ]
 description: ChestShop system for the WaterdropMC network.
 website: waterdropmc.de
@@ -20,5 +20,5 @@ permissions:
   cs.create:
     default: op
 
-  cs.use:
+  cs.buy:
     default: op

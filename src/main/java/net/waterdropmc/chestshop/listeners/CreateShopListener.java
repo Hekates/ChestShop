@@ -1,6 +1,6 @@
-package de.waterdropmc.chestshop.listeners;
+package net.waterdropmc.chestshop.listeners;
 
-import de.waterdropmc.chestshop.ChestShop;
+import net.waterdropmc.chestshop.ChestShop;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,17 +40,18 @@ public class CreateShopListener implements Listener {
 
         //Testing requirements
         if (!(player.getWorld().getName().equalsIgnoreCase(config.getString("level-name")))) return;
-        if (!(player.hasPermission("cs.create"))) {
-            player.sendMessage(config.getString("permission-error"));
-            return;
-        }
-        if (!(clicked instanceof ItemFrame)) return;
         if (!(player.getGameMode().equals(GameMode.SURVIVAL))) {
             player.sendMessage(config.getString("wrong-gamemode-error"));
             return;
         }
         if (!clicked.isEmpty()){
             event.setCancelled(true);
+            return;
+        }
+        if (!player.getInventory().getItemInHand().getItemMeta().hasDisplayName()) return;
+        if (!player.getInventory().getItemInHand().getItemMeta().getDisplayName().contains("shop")) return;
+        if (!(player.hasPermission("cs.create"))) {
+            player.sendMessage(config.getString("create-permission-error"));
             return;
         }
 

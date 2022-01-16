@@ -1,4 +1,4 @@
-package de.waterdropmc.chestshop.utils;
+package net.waterdropmc.chestshop.utils;
 
 import org.bukkit.Material;
 
