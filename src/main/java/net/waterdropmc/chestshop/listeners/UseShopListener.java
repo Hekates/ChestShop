@@ -21,9 +21,12 @@ public class UseShopListener implements Listener {
         Configuration config = ChestShop.getPlugin(ChestShop.class).getConfig();
 
         Player player = event.getPlayer();
-
-        String[] splitStr = player.getInventory().getItemInHand().getItemMeta().getDisplayName().toLowerCase().split("\\s+");
-        if (splitStr.length == 3) return;
+        //Checks if the handitem could contain a shop tag
+        if (!player.getInventory().getItemInHand().getType().equals(Material.AIR)) {
+            if (player.getInventory().getItemInHand().getItemMeta().hasDisplayName()) {
+                if (player.getInventory().getItemInHand().getItemMeta().getDisplayName().contains("shop")) return;
+            }
+        }
 
         ItemFrame itemFrame = (ItemFrame) event.getRightClicked();
         ItemStack item = itemFrame.getItem();
@@ -43,22 +46,22 @@ public class UseShopListener implements Listener {
 
         if (itemFrame.getItem().getType().equals(Material.AIR)) return;
 
-        if (!item.getItemMeta().getLore().contains("shop")) return;
-
+        //Checks if the Chest has enough Items to sell
         if (!chest.getBlockInventory().containsAtLeast(itemStackMat, amount)) {
             player.sendMessage(config.getString("not-enough-items-in-chest-buy-error"));
             return;
         }
-
+        //Checks if player has the permission
         if (!player.hasPermission("cs.buy")){
             player.sendMessage(config.getString("boy-permission-error"));
             return;
         }
-
+        //Checks if player has enough playment
         if (!player.getInventory().containsAtLeast(currancyStack, price)){
             player.sendMessage(config.getString("not-enough-payment-error"));
             return;
         }
+        //Checks if has an empty slot and then executes the transaction
         if (player.getInventory().firstEmpty() != -1) {
             itemStackMat.setAmount(amount);
             currancyStack.setAmount(price);

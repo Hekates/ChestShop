@@ -11,6 +11,7 @@ public final class ChestShop extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        //Events
         Bukkit.getPluginManager().registerEvents(new CreateShopListener(), this);
         Bukkit.getPluginManager().registerEvents(new RemoveShopListener(), this);
         Bukkit.getPluginManager().registerEvents(new UseShopListener(), this);

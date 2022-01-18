@@ -38,34 +38,36 @@ public class CreateShopListener implements Listener {
 
         Configuration config = ChestShop.getPlugin(ChestShop.class).getConfig();
 
-        //Testing requirements
+        if (player.getItemInHand().getAmount() == 0) return;
+
+        //Check world
         if (!(player.getWorld().getName().equalsIgnoreCase(config.getString("level-name")))) return;
-        if (!(player.getGameMode().equals(GameMode.SURVIVAL))) {
-            player.sendMessage(config.getString("wrong-gamemode-error"));
-            return;
-        }
+        //Check gamemode
+        if (!(player.getGameMode().equals(GameMode.SURVIVAL))) return;
+        //Checks if Item Frame is empty
         if (!clicked.isEmpty()){
             event.setCancelled(true);
             return;
         }
+        //Checks tag on Item
         if (!player.getInventory().getItemInHand().getItemMeta().hasDisplayName()) return;
         if (!player.getInventory().getItemInHand().getItemMeta().getDisplayName().contains("shop")) return;
+        //Checks permission
         if (!(player.hasPermission("cs.create"))) {
             player.sendMessage(config.getString("create-permission-error"));
             return;
         }
-
-        if (player.getItemInHand().getAmount() == 0) return;
-
+        //Splits display name
         String[] splitStr = item.getItemMeta().getDisplayName().toLowerCase().split("\\s+");
         int amount = Integer.parseInt(splitStr[0]);
         int price = Integer.parseInt(splitStr[1]);
         String currency = splitStr[2];
 
+        //Corrects item amount in players hand
         if (player.getInventory().getItemInHand().getAmount() > 1){
             player.getInventory().getItemInHand().setAmount(player.getItemInHand().getAmount() -1);
         } else if (player.getInventory().getItemInHand().getAmount() == 1){
-            player.getInventory().addItem(new ItemStack(Material.APPLE));
+            player.getInventory().clear(player.getInventory().getHeldItemSlot());
         }
 
         //Removes -s from currancy to convert to material

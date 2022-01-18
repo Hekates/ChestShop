@@ -23,7 +23,6 @@ level-name: "world"
 
 empty-line-error: "Du hast eine oder mehrere Linien nicht ausgefüllt!"
 create-permission-error: "Du hast die permission nicht!"
-wrong-gamemode-error: "Du bist im falschen Spielmodus. Dieses Feature ist nur Spieler im Survivalmodus gestattet."
 not-enough-items-in-chest-error: "Du hast zu wenig von den Items, die du verkaufen wills in der Truhe"
 
 not-enough-items-in-chest-buy-error: "Es hat zu wenig von den zu verkaufenden Items in der Truhe"
