@@ -6,7 +6,7 @@ import net.waterdropmc.chestshop.listeners.UseShopListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class ChestShop extends JavaPlugin {
+public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {

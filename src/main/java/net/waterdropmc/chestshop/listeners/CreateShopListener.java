@@ -1,6 +1,6 @@
 package net.waterdropmc.chestshop.listeners;
 
-import net.waterdropmc.chestshop.ChestShop;
+import net.waterdropmc.chestshop.Main;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,7 +36,7 @@ public class CreateShopListener implements Listener {
         Material itemMat = item.getType();
         ItemStack itemMatStack = new ItemStack(itemMat);
 
-        Configuration config = ChestShop.getPlugin(ChestShop.class).getConfig();
+        Configuration config = Main.getPlugin(Main.class).getConfig();
 
         if (player.getItemInHand().getAmount() == 0) return;
 

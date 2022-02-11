@@ -1,6 +1,6 @@
 package net.waterdropmc.chestshop.listeners;
 
-import net.waterdropmc.chestshop.ChestShop;
+import net.waterdropmc.chestshop.Main;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -18,7 +18,7 @@ public class UseShopListener implements Listener {
     @EventHandler
     public void onShopUse(PlayerInteractAtEntityEvent event){
 
-        Configuration config = ChestShop.getPlugin(ChestShop.class).getConfig();
+        Configuration config = Main.getPlugin(Main.class).getConfig();
 
         Player player = event.getPlayer();
 
