@@ -23,6 +23,7 @@ public class CreateShopListener implements Listener {
 
     @EventHandler
     public void createShop(PlayerInteractEntityEvent event) {
+
         Entity clicked = event.getRightClicked();
         Player player = event.getPlayer();
 
@@ -40,15 +41,13 @@ public class CreateShopListener implements Listener {
 
         if (player.getItemInHand().getAmount() == 0) return;
 
+        //Checks if Item Frame is empty
+        if (!itemFrame.getItem().equals(Material.AIR)) return;
+
         //Check world
         if (!(player.getWorld().getName().equalsIgnoreCase(config.getString("level-name")))) return;
         //Check gamemode
         if (!(player.getGameMode().equals(GameMode.SURVIVAL))) return;
-        //Checks if Item Frame is empty
-        if (!clicked.isEmpty()){
-            event.setCancelled(true);
-            return;
-        }
         //Checks tag on Item
         if (!player.getInventory().getItemInHand().getItemMeta().hasDisplayName()) return;
         if (!player.getInventory().getItemInHand().getItemMeta().getDisplayName().contains("shop")) return;
@@ -64,9 +63,9 @@ public class CreateShopListener implements Listener {
         String currency = splitStr[2];
 
         //Corrects item amount in players hand
-        if (player.getInventory().getItemInHand().getAmount() > 1){
-            player.getInventory().getItemInHand().setAmount(player.getItemInHand().getAmount() -1);
-        } else if (player.getInventory().getItemInHand().getAmount() == 1){
+        if (player.getInventory().getItemInHand().getAmount() > 1) {
+            player.getInventory().getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+        } else if (player.getInventory().getItemInHand().getAmount() == 1) {
             player.getInventory().clear(player.getInventory().getHeldItemSlot());
         }
 

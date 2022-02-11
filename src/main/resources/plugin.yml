@@ -1,9 +1,9 @@
 name: ChestShop
 version: '${project.version}'
-main: net.waterdropmc.chestshop.ChestShop
+main: net.waterdropmc.chestshop.Main
 authors: [ Hekates ]
 description: ChestShop system for the WaterdropMC network.
-website: waterdropmc.de
+website: waterdropmc.net
 
 ################################################################
 #   ______  __                   __   / _\| |__    ___   _ __  #
